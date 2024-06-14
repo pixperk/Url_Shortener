@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #e9ecef;
+            margin: 0;
+            color: #495057;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 2em;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            margin-bottom: 1.5em;
+            font-size: 2.2em;
+            color: #007bff;
+            letter-spacing: 1px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input[type="url"] {
+            padding: 0.8em;
+            font-size: 1em;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            margin-bottom: 1.5em;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="url"]:focus {
+            outline: none;
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        button {
+            padding: 0.8em 2em;
+            font-size: 1em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .footer {
+            margin-top: 1.5em;
+            font-size: 0.85em;
+            color: #6c757d;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2em;
+        }
+
+        table th, table td {
+            padding: 0.75em;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f1f1f1;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>URLify</h1>
+        <% if (locals.id) { %>
+            <p>Your long URL has been shortened: <a href="http://localhost:8001/url/<%= id %>" target="_blank">http://localhost:8001/url/<%= id %></a></p>
+        <% } %>
+        <form action="/url/" method="POST">
+            <input type="url" name="url" placeholder="Enter the URL" required>
+            <button type="submit">Shorten URL</button>
+        </form>
+        <div class="footer">
+            <p>Powered by URLify</p>
+        </div>
+        <% if (locals.urls && locals.urls.length) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>URL Id</th>
+                        <th>Redirects to</th>
+                        <th>Visits</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% urls.forEach(url => { %>
+                        <tr>
+                            <td><%= url.shortId %></td>
+                            <td><a href="<%= url.redirectURL %>" target="_blank"><%= url.redirectURL %></a></td>
+                            <td><%= url.visitHistory.length %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } %>
+    </div>
+</body>
+</html>
