@@ -1,5 +1,4 @@
 const User = require("../models/user.model");
-const {v4:uuidv4} = require('uuid')
 const {setUser,getUser} = require('../services/auth')
 
 async function handleUserSignUp(req, res) {
@@ -20,9 +19,8 @@ async function handleUserLogIn(req, res) {
       error: "Invalid credentials",
     });
    
-    const sessionId = uuidv4()
-    setUser(sessionId, user)
-    res.cookie('user_sessionId', sessionId)
+    const token = setUser(user)
+    res.cookie('user_sessionId', token)
   return res.redirect("/");
 }
 
